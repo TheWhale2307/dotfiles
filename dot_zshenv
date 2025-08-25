@@ -8,7 +8,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 # default programs
 export EDITOR="nano"
-export TERM="kitty"
+#export TERM="xterm-kitty"
 export TERMINAL="kitty"
 #export MUSPLAYER="termusic"
 export BROWSER="librewolf"
