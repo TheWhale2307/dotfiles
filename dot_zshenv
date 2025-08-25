@@ -1,5 +1,5 @@
 # environment vars to set on login, zsh settings in ~/config/zsh/.zshrc
-# read first, before ~/.config/zsh/.zshrc
+# read first, before ~/.config/zsh/.zprofile and ~/.config/zsh/.zshrc
 
 # follow XDG base dir specification
 export XDG_CONFIG_HOME="$HOME/.config"
