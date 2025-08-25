@@ -1,11 +1,14 @@
 # environment vars to set on login, zsh settings in ~/config/zsh/.zshrc
-# read first, before ~/.config/zsh/.zshrc
+# read first and always, before ~/.config/zsh/.zprofile and ~/.config/zsh/.zshrc
 
 # follow XDG base dir specification
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
+
+# bootstrap .zshrc to ~/.config/zsh/.zshrc, any other zsh config files can also reside there
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # default programs
 export EDITOR="nano"
@@ -14,9 +17,6 @@ export TERMINAL="kitty"
 #export MUSPLAYER="termusic"
 export BROWSER="librewolf"
 export BROWSER2="firefox"
-
-# bootstrap .zshrc to ~/.config/zsh/.zshrc, any other zsh config files can also reside there
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # add scripts to path
 export PATH="$XDG_CONFIG_HOME/Scripts:$PATH"
