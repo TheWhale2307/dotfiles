@@ -1,0 +1,58 @@
+# +-----------------+
+# | Zsh Main Config |
+# +-----------------+
+# read third but only by interactive shells, after ~/.zshenv (and ~/.config/zsh/.zprofile)
+
+# +-------------+
+# | Completions |
+# +-------------+
+
+# load more (custom) completions
+fpath=($XDG_CONFIG_HOME/zsh/completions $fpath)
+# init completions
+autoload -Uz compinit && compinit
+# With hidden files
+_comp_options+=(globdots)
+
+
+
+# init zoxide
+eval "$(zoxide init --cmd cd zsh)"
+
+# init prompt
+#eval "$(oh-my-posh init zsh --config ~/.config/zsh/prompts/zen_modified.toml)"
+
+# init fzf (env is in ~/.zshenv)
+source <(fzf --zsh --preview "bat --color=always {}")
+
+# keybinds (list all with "zle -al")
+bindkey '^[[1;5C' forward-word  # Ctrl+Right
+bindkey '^[[1;5D' backward-word # Ctrl+Left
+bindkey '^H' backward-kill-word # Crtl+Backspace
+bindkey '^[[3;5~' kill-word     # Crtl+Del
+bindkey '^[[3~' delete-char     # Del
+
+# +---------+
+# | Options |
+# +---------+
+# (list all with "set -o")
+
+# set history options
+setopt HIST_IGNORE_SPACE HIST_IGNORE_DUPS INC_APPEND_HISTORY SHARE_HISTORY
+
+# +---------+
+# | Aliases |
+# +---------+
+
+# source aliases and aliases local to this machine
+[ -f "$XDG_CONFIG_HOME/.aliases" ] && source "$XDG_CONFIG_HOME/.aliases"
+[ -f "$XDG_CONFIG_HOME/.aliases_local" ] && source "$XDG_CONFIG_HOME/.aliases_local"
+
+# +-----------+
+# | Fun Stuff |
+# +-----------+
+
+# fancy tetris :)
+autoload -Uz tetriscurses
+# less fancy tetris :(
+#autoload -Uz tetris

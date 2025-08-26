@@ -1,25 +1,62 @@
-# environment vars to set on login, zsh settings in ~/config/zsh/.zshrc
-# read first, before ~/.config/zsh/.zprofile and ~/.config/zsh/.zshrc
+# +----------------------+
+# | Zsh Environment Vars |
+# +----------------------+
+# set environment variables on login, main zsh config in ~/config/zsh/.zshrc
+# read first but only once, before ~/.config/zsh/.zprofile and ~/.config/zsh/.zshrc
+
+# +-----+
+# | XDG |
+# +-----+
 
 # follow XDG base dir specification
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# default programs
+# +---------+
+# | History |
+# +---------+
+
+# history
+export HISTFILE="$XDG_CACHE_HOME/zsh_history"
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+
+# +----------+
+# | Programs |
+# +----------+
+
+# editors
 export EDITOR="nano"
+export VISUAL="nano"
 #export TERM="xterm-kitty"
 export TERMINAL="kitty"
 #export MUSPLAYER="termusic"
 export BROWSER="librewolf"
 export BROWSER2="firefox"
 
+# +---------+
+# | Dotdirs |
+# +---------+
+
 # bootstrap .zshrc to ~/.config/zsh/.zshrc, any other zsh config files can also reside there
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-# add scripts to path
-export PATH="$XDG_CONFIG_HOME/Scripts:$PATH"
+# +-------+
+# | Paths |
+# +-------+
 
-export FZF_DEFAULT_OPTS="--layout=reverse --height 30% --preview='bat -p --color=always {}'"
+# add scripts to path
+export PATH="$HOME/Scripts:$PATH"
+
+# +------------+
+# | Fzf Config |
+# +------------+
+
+# options for running "fzf"
+export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore"	
+export FZF_DEFAULT_OPTS="--height 30% --preview='fzf-preview.sh {}'"
 # separate opts for history widget
-export FZF_CTRL_R_OPTS="--style minimal --info inline --no-sort --no-preview"
+export FZF_CTRL_R_OPTS="--info inline --no-sort --no-preview"
+# options for "**<TAB>"
+export FZF_COMPLETION_OPTS='--height 30% --info=inline'

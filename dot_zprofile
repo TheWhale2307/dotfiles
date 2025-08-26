@@ -1,2 +1,0 @@
-# commands to run once on login, zsh settings in ~/config/zsh/.zshrc
-# read second but only by login shells, after ~/.zshenv but before ~/.config/zsh/.zshrc
