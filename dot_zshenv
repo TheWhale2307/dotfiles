@@ -54,7 +54,7 @@ export PATH="$HOME/Scripts:$PATH"
 # +------------+
 
 # options for running "fzf"
-export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore"	
+export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore"
 export FZF_DEFAULT_OPTS="--height 30% --preview='fzf-preview.sh {}'"
 # separate opts for history widget
 export FZF_CTRL_R_OPTS="--info inline --no-sort --no-preview"

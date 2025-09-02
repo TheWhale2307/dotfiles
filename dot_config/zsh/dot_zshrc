@@ -30,52 +30,52 @@ source <(fzf --zsh --preview "bat --color=always {}")
 # +----------+
 
 # keybinds (list all with "zle -al")
-bindkey '^[[1;5C' forward-word  # Ctrl+Right
+bindkey '^[[1;5C' forward-word	# Ctrl+Right
 bindkey '^[[1;5D' backward-word # Ctrl+Left
 bindkey '^H' backward-kill-word # Crtl+Backspace
-bindkey '^[[3;5~' kill-word     # Crtl+Del
-bindkey '^[[3~' delete-char     # Del
+bindkey '^[[3;5~' kill-word		# Crtl+Del
+bindkey '^[[3~' delete-char		# Del
 
 # Custom widget to cycle through capitalize/uppercase/lowercase
 # code is AI generated, then modified to get the desired behavior
 toggle-case-word() {
-    # save cursor position
-    local pos=$CURSOR
+	# save cursor position
+	local pos=$CURSOR
 
-    # if cursor is between two spaces, do nothing
-    if [[ ${BUFFER[pos]} == " " && ${BUFFER[pos+1]} == " " ]]; then
-        return
-    fi
+	# if cursor is between two spaces, do nothing
+	if [[ ${BUFFER[pos]} == " " && ${BUFFER[pos+1]} == " " ]]; then
+		return
+	fi
 
-    # move to end of current word
-    zle forward-word
-    local word_end=$CURSOR
-    
-    # move to beginning of current word
-    zle backward-word
-    local word_start=$CURSOR
+	# move to end of current word
+	zle forward-word
+	local word_end=$CURSOR
 
-    # extract the word
-    local word=${BUFFER[word_start+1,word_end]}
+	# move to beginning of current word
+	zle backward-word
+	local word_start=$CURSOR
 
-    # determine new case based on current state
-    local new_word
-    if [[ $word == ${(L)word} ]]; then
-        # if word is all lowercase, capitalize first letter
-        new_word=${(U)${word:0:1}}${(L)${word:1}}
-    elif [[ $word == ${(U)word} ]]; then
-        # if word is all uppercase, make lowercase
-        new_word=${(L)word}
-    else
-        # if word is mixed/capitalized, make uppercase
-        new_word=${(U)word}
-    fi
-    
-    # replace the word in buffer
-    BUFFER[word_start+1,word_end]=$new_word
-    
-    # restore cursor position
-    CURSOR=$pos
+	# extract the word
+	local word=${BUFFER[word_start+1,word_end]}
+
+	# determine new case based on current state
+	local new_word
+	if [[ $word == ${(L)word} ]]; then
+		# if word is all lowercase, capitalize first letter
+		new_word=${(U)${word:0:1}}${(L)${word:1}}
+	elif [[ $word == ${(U)word} ]]; then
+		# if word is all uppercase, make lowercase
+		new_word=${(L)word}
+	else
+		# if word is mixed/capitalized, make uppercase
+		new_word=${(U)word}
+	fi
+
+	# replace the word in buffer
+	BUFFER[word_start+1,word_end]=$new_word
+
+	# restore cursor position
+	CURSOR=$pos
 }
 zle -N toggle-case-word
 bindkey '^[c' toggle-case-word
@@ -83,11 +83,11 @@ bindkey '^[c' toggle-case-word
 # Alt+Up to go to parent directory
 # source: https://wiki.archlinux.org/title/Zsh#File_manager_key_binds
 cdParentKey() {
-    cd ..
-    zle reset-prompt
-    print
-    ls -AF --color=auto
-    zle reset-prompt
+	cd ..
+	zle reset-prompt
+	print
+	ls -AF --color=auto
+	zle reset-prompt
 }
 zle -N cdParentKey
 bindkey '^[[1;3A' cdParentKey
@@ -159,4 +159,4 @@ autoload -Uz tetriscurses
 
 # source: https://github.com/zsh-users/zsh-autosuggestions
 source $XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh
-source $XDG_CONFIG_HOME/zsh/suggestions/zsh-autosuggestions.zsh 
+source $XDG_CONFIG_HOME/zsh/suggestions/zsh-autosuggestions.zsh

@@ -5,12 +5,12 @@
 # read second but only by login shells, after ~/.zshenv but before ~/.config/zsh/.zshrc
 
 ensure_installed() {
-  for package in "$@"; do
-    if ! paru -Qi "$package" >/dev/null 2>&1; then
-      echo "WARNING: $package is missing! Trying to install..."
-      paru -S --noconfirm "$package"
-    fi
-  done
+	for package in "$@"; do
+		if ! paru -Qi "$package" >/dev/null 2>&1; then
+			echo "WARNING: $package is missing! Trying to install..."
+			paru -S --noconfirm "$package"
+		fi
+	done
 }
 
 ensure_installed bat fzf zoxide ripgrep
