@@ -37,43 +37,45 @@ bindkey '^[[3;5~' kill-word     # Crtl+Del
 bindkey '^[[3~' delete-char     # Del
 
 # Custom widget to cycle through capitalize/uppercase/lowercase
-# still needs some work (_ is cursor position):
-# Test _ -> TEST even though cursor is on next word
-# Test.txt -> TEST.TXT even thoug hextension should be ignored for casing
-# code is AI generated
+# code is AI generated, then modified to get the desired behavior
 toggle-case-word() {
-    # Save cursor position
+    # save cursor position
     local pos=$CURSOR
-    
-    # Move to beginning of current word
-    zle backward-word
-    local word_start=$CURSOR
-    
-    # Move to end of current word  
+
+    # if cursor is between two spaces, do nothing
+    if [[ ${BUFFER[pos]} == " " && ${BUFFER[pos+1]} == " " ]]; then
+        return
+    fi
+
+    # move to end of current word
     zle forward-word
     local word_end=$CURSOR
     
-    # Extract the word
+    # move to beginning of current word
+    zle backward-word
+    local word_start=$CURSOR
+
+    # extract the word
     local word=${BUFFER[word_start+1,word_end]}
-    
-    # Determine new case based on current state
+
+    # determine new case based on current state
     local new_word
-    if [[ ${word:0:1} == ${(U)${word:0:1}} && ${word:1} == ${(L)${word:1}} && $word != ${(U)word} ]]; then
-        # If first char is uppercase and rest is lowercase (capitalized), make all uppercase
-        new_word=${(U)word}
+    if [[ $word == ${(L)word} ]]; then
+        # if word is all lowercase, capitalize first letter
+        new_word=${(U)${word:0:1}}${(L)${word:1}}
     elif [[ $word == ${(U)word} ]]; then
-        # If word is all uppercase, make all lowercase
+        # if word is all uppercase, make lowercase
         new_word=${(L)word}
     else
-        # If lowercase or mixed case, capitalize only first letter
-        new_word=${(U)${word:0:1}}${(L)${word:1}}
+        # if word is mixed/capitalized, make uppercase
+        new_word=${(U)word}
     fi
     
-    # Replace the word in buffer
+    # replace the word in buffer
     BUFFER[word_start+1,word_end]=$new_word
     
-    # Restore cursor position (adjust for length difference)
-    CURSOR=$((pos + ${#new_word} - ${#word}))
+    # restore cursor position
+    CURSOR=$pos
 }
 zle -N toggle-case-word
 bindkey '^[c' toggle-case-word
@@ -124,12 +126,6 @@ zstyle ":completion:*" menu select
 zstyle ":completion:*" special-dirs true
 # colorize completions menu
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} ma=0\;33
-
-# --- stolen, check out --- 
-#setopt GLOB_COMPLETE      # Show autocompletion menu with globs
-#setopt MENU_COMPLETE      # Automatically highlight first element of completion menu
-#setopt AUTO_LIST          # Automatically list choices on ambiguous completion
-#setopt COMPLETE_IN_WORD   # Complete from both ends of a word
 
 # +--------------+
 # | Load Aliases |
