@@ -157,6 +157,7 @@ autoload -Uz tetriscurses
 # +---------+
 # these should be at the end in the config
 
-# source: https://github.com/zsh-users/zsh-autosuggestions
+# source: https://github.com/zsh-users/zsh-syntax-highlighting
 source $XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh
+# source: https://github.com/zsh-users/zsh-autosuggestions
 source $XDG_CONFIG_HOME/zsh/suggestions/zsh-autosuggestions.zsh
