@@ -1,0 +1,191 @@
+# +--------------+
+# | Alias Config |
+# +--------------+
+# read by all interactive shells ideally, mainly zsh (and bash)
+
+# +---------+
+# | Aliases |
+# +---------+
+
+alias ..="cd .."
+alias cd..="cd .."
+alias ls="ls -F --color=auto"
+alias la="ls -AF --color=auto"
+alias lah="ls -lAhF --color=auto"
+alias cat="bat"
+alias grep="grep --color=auto"
+alias nana="nano"
+alias c="clear"
+alias e="exit"
+alias path="echo -e ${PATH//:/\\n}"
+alias shell="exec $SHELL -l"
+alias aafire="aafire -driver curses"
+
+# open tldr page when argument is given, fuzzy seach when run without arguments
+# uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
+tldr() {
+  if [ "$#" -eq 0 ]; then
+    command tldr --list | fzf --preview "command tldr {} --color always" | xargs -r tldr
+  else
+    command tldr $@
+  fi
+}
+
+gputest() {
+  ensure_installed furmark
+  echo "TODO in .aliases!"
+}
+
+cputest() {
+  ensure_installed stress
+  stress --cpu $(nproc)
+}
+
+neofetch () {
+  ensure_installed fastfetch
+  fastfetch $@
+}
+
+# create a directory and cd into it directly
+mkcd() {
+  mkdir "$*"
+  cd "$*"
+}
+
+# cd into directory and list its contents
+cdl() {
+  cd "$*"
+  ls
+}
+
+# +-------------+
+# | Git Aliases |
+# +-------------+
+
+# git add all files and commit with message following "gg". Example: "gg My commit message"
+# only adds modified and deleted files, not untracked ones
+gg() {
+  #git add . # this is obsolete, done with the -a below
+  git commit -am "$*"
+}
+
+# +------------------+
+# | Helper Functions |
+# +------------------+
+
+# install a package if it is not yet installed
+ensure_installed() {
+  for package in "$@"; do
+    if ! paru -Qi "$package" >/dev/null 2>&1; then
+      echo "WARNING: $package is missing! Trying to install..."
+      paru -S --noconfirm "$package"
+    fi
+  done
+}
+
+# update the entire system with paru (and flatpak)
+uu() {
+  printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
+  paru -Syu --noconfirm --sudoloop --ignore openrgb
+  if paru -Qi "flatpak" >/dev/null 2>&1; then
+    printf "\n\033[53;4m--- Flatpak ---\033[0m\n\n"
+    flatpak update -y
+  fi
+}
+
+# +-----------+
+# | Fun Stuff |
+# +-----------+
+
+# dotfiles ohne HGich.T-Referenz sind keine richtigen dotfiles!
+hackertools(){
+  ensure_installed figlet
+  echo -e "Hacker haben Hackertools! Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | figlet -c # pipe into filget to be able to use \n
+}
+
+# just be a bit more polite to the shell
+# stolen from someone on reddit
+function pls(){
+  if [ "$#" -eq 0 ]; then # check if no arguments are given
+    sudo $(fc -ln -1) # execute previous command with sudo
+  else
+    sudo $@ # alias 'please' -> 'sudo' if arguments are given
+  fi
+}
+
+# +-----------+
+# | Scripting |
+# +-----------+
+
+# queue up commands inside of a text file from multiple sessions and execute them one by one in the first session
+# usage: q name <command> <arguments>
+# code is AI generated
+q() {
+    # check for missing arguments
+    if [[ $# -le 1 ]]; then
+        echo "Usage: q <file_name> <command> [args...]"
+        return 1
+    fi
+    
+    # check if $1 is a command but not equal to $2 (probably wrong usage)
+    if command -v "$1" >/dev/null 2>&1 && [[ "$1" != "$2" ]]; then
+        echo "Usage: q <file_name> <command> [args...]"
+        echo "Did you mean: q <file_name> $* ?"
+        return 1
+    fi
+    
+    # all validation passed - proceed with actual functionality
+    local file="$HOME/$1.q.up"
+    shift # remove the first parameter (the file name)
+    local cmd="$*"
+    
+    if [[ ! -f "$file" ]]; then
+        # file doesn't exist, create it and execute the command
+        touch "$file"
+        eval "$cmd"
+        # continuously process the file until it's empty
+        while [[ -s $file ]]; do
+            # read and execute the first line
+            local line=$(head -n 1 "$file")
+            # remove the executed line from the file
+            sed -i '1d' "$file"
+            eval "$line"
+        done
+        # remove the file if it's empty
+        rm "$file"
+    else
+        # file exists, append the command to the file
+        echo "$cmd" >> "$file"
+    fi
+}
+
+# list downloaded LLMs on ollama and easily run one by prompting
+# code is AI generated
+os() {
+  # retrieve and save the output of "ollama list" in a variable
+  output=$(ollama list)
+
+  # print the output with line numbers for each line except the header
+  echo "$output" | awk 'NR==1 {print; next} {print NR-1, $0}'
+
+  # get the number of models (subtracting header line)
+  num_models=$(echo "$output" | wc -l)
+  num_models=$((num_models - 1))
+
+  # prompt user for input and validate choice
+  while true; do
+      echo -n "\nEnter the number of the model you want to run (1-$num_models): "
+      read choice
+      if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_models )); then
+          break
+      else
+          echo "Invalid choice. Please enter a number between 1 and $num_models."
+      fi
+  done
+
+  # etract the name of the selected model based on user choice
+  model_name=$(echo "$output" | awk -v line=$((choice + 1)) 'NR == line {print $1}')
+
+  # run the chosen model using "ollama run <model_name>"
+  ollama run "$model_name"
+}

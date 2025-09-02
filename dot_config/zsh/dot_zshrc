@@ -3,20 +3,20 @@
 # +-----------------+
 # read third but only by interactive shells, after ~/.zshenv (and ~/.config/zsh/.zprofile)
 
-# +-------------+
-# | Completions |
-# +-------------+
+# +-----------------+
+# | Initializations |
+# +-----------------+
 
 # load more (custom) completions
 fpath=($XDG_CONFIG_HOME/zsh/completions $fpath)
 # init completions
 autoload -Uz compinit && compinit
-# With hidden files
-_comp_options+=(globdots)
-
-
+# enable easy access to colors
+# Usage: $fg[red] $bg[yellow] $reset_color
+autoload colors && colors
 
 # init zoxide
+# uses "cd" for regular usage and "cdi" for interactive mode with fzf
 eval "$(zoxide init --cmd cd zsh)"
 
 # init prompt
@@ -25,6 +25,10 @@ eval "$(zoxide init --cmd cd zsh)"
 # init fzf (env is in ~/.zshenv)
 source <(fzf --zsh --preview "bat --color=always {}")
 
+# +----------+
+# | Keybinds |
+# +----------+
+
 # keybinds (list all with "zle -al")
 bindkey '^[[1;5C' forward-word  # Ctrl+Right
 bindkey '^[[1;5D' backward-word # Ctrl+Left
@@ -32,21 +36,116 @@ bindkey '^H' backward-kill-word # Crtl+Backspace
 bindkey '^[[3;5~' kill-word     # Crtl+Del
 bindkey '^[[3~' delete-char     # Del
 
+# Custom widget to cycle through capitalize/uppercase/lowercase
+# still needs some work (_ is cursor position):
+# Test _ -> TEST even though cursor is on next word
+# Test.txt -> TEST.TXT even thoug hextension should be ignored for casing
+# code is AI generated
+toggle-case-word() {
+    # Save cursor position
+    local pos=$CURSOR
+    
+    # Move to beginning of current word
+    zle backward-word
+    local word_start=$CURSOR
+    
+    # Move to end of current word  
+    zle forward-word
+    local word_end=$CURSOR
+    
+    # Extract the word
+    local word=${BUFFER[word_start+1,word_end]}
+    
+    # Determine new case based on current state
+    local new_word
+    if [[ ${word:0:1} == ${(U)${word:0:1}} && ${word:1} == ${(L)${word:1}} && $word != ${(U)word} ]]; then
+        # If first char is uppercase and rest is lowercase (capitalized), make all uppercase
+        new_word=${(U)word}
+    elif [[ $word == ${(U)word} ]]; then
+        # If word is all uppercase, make all lowercase
+        new_word=${(L)word}
+    else
+        # If lowercase or mixed case, capitalize only first letter
+        new_word=${(U)${word:0:1}}${(L)${word:1}}
+    fi
+    
+    # Replace the word in buffer
+    BUFFER[word_start+1,word_end]=$new_word
+    
+    # Restore cursor position (adjust for length difference)
+    CURSOR=$((pos + ${#new_word} - ${#word}))
+}
+zle -N toggle-case-word
+bindkey '^[c' toggle-case-word
+
+# Alt+Up to go to parent directory
+# source: https://wiki.archlinux.org/title/Zsh#File_manager_key_binds
+cdParentKey() {
+    cd ..
+    zle reset-prompt
+    print
+    ls -AF --color=auto
+    zle reset-prompt
+}
+zle -N cdParentKey
+bindkey '^[[1;3A' cdParentKey
+
+# exit when Crtl+D is pressed, even when line is filled
+# source: https://wiki.archlinux.org/title/Zsh#Shortcut_to_exit_shell_on_partial_command_line
+exit_zsh() { exit }
+zle -N exit_zsh
+bindkey '^D' exit_zsh
+
 # +---------+
 # | Options |
 # +---------+
 # (list all with "set -o")
 
-# set history options
-setopt HIST_IGNORE_SPACE HIST_IGNORE_DUPS INC_APPEND_HISTORY SHARE_HISTORY
+# set (better) history options
+setopt hist_ignore_space hist_ignore_dups inc_append_history share_history
+#setopt auto_menu menu_complete
+# type directory name to cd into it, additionally to zoxide
+setopt autocd
+# when a directory is autocompleted, append a slash instead of a space
+setopt auto_param_slash
+# make globbing and completions case insensitive
+setopt no_case_glob no_case_match
+# include hidden files in globbing
+setopt globdots
+# allow comments in shell
+setopt interactive_comments
+# complete on the first tab
+setopt menu_complete
 
-# +---------+
-# | Aliases |
-# +---------+
+# options for completions
+# tab opens completions menu
+zstyle ":completion:*" menu select
+# include . and .. in completions menu
+zstyle ":completion:*" special-dirs true
+# colorize completions menu
+zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} ma=0\;33
 
-# source aliases and aliases local to this machine
-[ -f "$XDG_CONFIG_HOME/.aliases" ] && source "$XDG_CONFIG_HOME/.aliases"
-[ -f "$XDG_CONFIG_HOME/.aliases_local" ] && source "$XDG_CONFIG_HOME/.aliases_local"
+# --- stolen, check out --- 
+#setopt GLOB_COMPLETE      # Show autocompletion menu with globs
+#setopt MENU_COMPLETE      # Automatically highlight first element of completion menu
+#setopt AUTO_LIST          # Automatically list choices on ambiguous completion
+#setopt COMPLETE_IN_WORD   # Complete from both ends of a word
+
+# +--------------+
+# | Load Aliases |
+# +--------------+
+
+# source aliases and aliases local to this machine if they exist
+[ -f "$XDG_CONFIG_HOME/shell/.aliases" ] && source "$XDG_CONFIG_HOME/shell/.aliases"
+[ -f "$XDG_CONFIG_HOME/shell/.aliases_local" ] && source "$XDG_CONFIG_HOME/shell/.aliases_local"
+
+# bash has "help" to print documentation for builtins
+# zsh has no "help" by default and aliases "run-help" -> "man"
+# this makes zsh behave like bash in this regard
+# source: https://wiki.archlinux.org/title/Zsh#Help_command
+autoload -Uz run-help
+(( ${+aliases[run-help]} )) && unalias run-help
+alias help=run-help
 
 # +-----------+
 # | Fun Stuff |
