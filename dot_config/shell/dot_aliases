@@ -7,19 +7,24 @@
 # | Aliases |
 # +---------+
 
-alias ..="cd .."
-alias cd..="cd .."
-alias ls="ls -F --color=auto"
-alias la="ls -AF --color=auto"
-alias lah="ls -lAhF --color=auto"
-alias cat="bat"
-alias grep="rg"
-alias nana="nano"
-alias c="clear"
-alias e="exit"
-alias path="echo -e ${PATH//:/\\n}"
-alias shell="exec $SHELL -l"
-alias aafire="aafire -driver curses"
+alias ..='cd ..'
+alias cd..='cd ..'
+# use eza for better colored output
+# the sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
+alias ls='eza -F'
+alias la='eza -AF'
+alias lah='eza -lAhF'
+#alias ls='ls -F --color=auto'
+#alias la='ls -AF --color=auto'
+#alias lah='ls -lAhF --color=auto'
+alias cat='bat'
+alias grep='rg'
+alias nana='nano'
+alias c='clear'
+alias e='exit'
+alias path='echo -e ${PATH//:/\\n}'
+alias shell='exec $SHELL -l'
+alias aafire='aafire -driver curses'
 
 # open tldr page when argument is given, fuzzy seach when run without arguments
 # uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
