@@ -13,12 +13,15 @@ alias cd..='cd ..'
 # the sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
 alias ls='eza -F'
 alias la='eza -AF'
+# l prints a long list, A is for all files except "." and "..", h stands for human readable sizes and F appends "/" to folders and "*" to executables
 alias lah='eza -lAhF'
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
 #alias lah='ls -lAhF --color=auto'
 alias cat='bat'
-alias grep='rg'
+# make ripgrep case insensitive by default, use -s to override this
+# also include hidden files by default
+alias grep='rg -.i'
 alias nana='nano'
 alias c='clear'
 alias e='exit'

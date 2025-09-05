@@ -47,7 +47,7 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 # +-------+
 
 # add scripts to path
-export PATH="$HOME/Scripts:$PATH"
+export PATH="$HOME/scripts:$PATH"
 
 # +------------+
 # | Fzf Config |

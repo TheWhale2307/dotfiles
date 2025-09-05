@@ -20,7 +20,7 @@ autoload colors && colors
 eval "$(zoxide init --cmd cd zsh)"
 
 # init prompt
-#eval "$(oh-my-posh init zsh --config ~/.config/zsh/prompts/zen_modified.toml)"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen.toml)"
 
 # init fzf (env is in ~/.zshenv)
 source <(fzf --zsh --preview "bat --color=always {}")
