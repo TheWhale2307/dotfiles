@@ -10,8 +10,9 @@ final_space = true
 
 [secondary_prompt]
   template = '❯❯ '
-  foreground = 'p:magenta'
+  foreground = ''
   background = 'transparent'
+  foreground_templates = ['{{if gt .Code 0}}p:red{{end}}', '{{if eq .Code 0}}p:magenta{{end}}']
 
 [transient_prompt]
   template = '❯ '
