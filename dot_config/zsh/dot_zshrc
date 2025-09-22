@@ -25,6 +25,9 @@ eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen.toml)"
 # init fzf (env is in ~/.zshenv)
 source <(fzf --zsh --preview "bat --color=always {}")
 
+# make path contain only unique entries
+typeset -U PATH
+
 # +----------+
 # | Keybinds |
 # +----------+
@@ -127,9 +130,9 @@ zstyle ":completion:*" special-dirs true
 # colorize completions menu
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} ma=0\;33
 
-# +--------------+
-# | Load Aliases |
-# +--------------+
+# +---------+
+# | Aliases |
+# +---------+
 
 # source aliases and aliases local to this machine if they exist
 [ -f "$XDG_CONFIG_HOME/shell/.aliases" ] && source "$XDG_CONFIG_HOME/shell/.aliases"

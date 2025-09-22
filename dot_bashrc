@@ -1,0 +1,27 @@
+# +-----------------+
+# | Zsh Main Config |
+# +-----------------+
+# very basic config as I mainly use zsh, but for backup purposes
+# also this file can be located only at ~/.bashrc 😠
+
+# +-----------------+
+# | Initializations |
+# +-----------------+
+
+# init zoxide
+# uses "cd" for regular usage and "cdi" for interactive mode with fzf
+eval "$(zoxide init --cmd cd bash)"
+
+# init prompt
+eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/zen.toml)"
+
+# init fzf (env is in ~/.zshenv)
+source <(fzf --bash --preview "bat --color=always {}")
+
+# +---------+
+# | Aliases |
+# +---------+
+
+# source aliases and aliases local to this machine if they exist
+[ -f "$XDG_CONFIG_HOME/shell/.aliases" ] && source "$XDG_CONFIG_HOME/shell/.aliases"
+[ -f "$XDG_CONFIG_HOME/shell/.aliases_local" ] && source "$XDG_CONFIG_HOME/shell/.aliases_local"
