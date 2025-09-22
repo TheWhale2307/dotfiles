@@ -11,10 +11,11 @@ alias ..='cd ..'
 alias cd..='cd ..'
 # use eza for better colored output
 # the sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
+# l prints a long list, A is for all files except "." and "..", h stands for human readable sizes and F appends "/" to folders and "*" to executables
 alias ls='eza -F'
 alias la='eza -AF'
-# l prints a long list, A is for all files except "." and "..", h stands for human readable sizes and F appends "/" to folders and "*" to executables
 alias lah='eza -lAhF'
+# legacy ls aliases
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
 #alias lah='ls -lAhF --color=auto'
@@ -28,6 +29,9 @@ alias e='exit'
 alias path='echo -e ${PATH//:/\\n}'
 alias shell='exec $SHELL -l'
 alias aafire='aafire -driver curses'
+alias rsync='rsync --info=progress2'
+# reverse the order of entries so the relevant ones are at the bottom
+alias paru="paru --bottomup"
 
 # open tldr page when argument is given, fuzzy seach when run without arguments
 # uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
@@ -41,7 +45,7 @@ tldr() {
 
 gputest() {
 	ensure_installed furmark
-	echo "TODO in .aliases!"
+	echo "TODO in ~/.config/shell/.aliases!"
 }
 
 cputest() {
@@ -49,8 +53,20 @@ cputest() {
 	stress --cpu $(nproc)
 }
 
-neofetch () {
+fastfetch() {
 	ensure_installed fastfetch
+	# give a bit more weight to arch and the cool wolf from darkos
+	logos=("arch2" "arch2" "darkos" "darkos" "fastfetch" "locos" "sulin")
+
+	# indexing works fine for most shells, including bash, zsh arrays start at 1 however
+	if [[ -n "$ZSH_VERSION" ]]; then
+		command fastfetch -l "${logos[$(($RANDOM % ${#logos[@]} + 1))]}" $@
+	else
+		command fastfetch -l "${logos[$RANDOM % ${#logos[@]}]}" $@
+	fi
+}
+
+neofetch () {
 	fastfetch $@
 }
 
@@ -105,10 +121,16 @@ uu() {
 # | Fun Stuff |
 # +-----------+
 
+figlet() {
+	ensure_installed figlet figlet-fonts lolcat
+	command figlet -t -f doh $@ | lolcat
+}
+
 # dotfiles ohne HGich.T-Referenz sind keine richtigen dotfiles!
 hackertools(){
 	ensure_installed figlet
-	echo -e "Hacker haben Hackertools! Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | figlet -c # pipe into filget to be able to use \n
+	# pipe into filget to be able to use \n
+	echo -e "Hacker haben Hackertools! Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | command figlet -c -t
 }
 
 # just be a bit more polite to the shell
@@ -196,10 +218,4 @@ os() {
 
 	# run the chosen model using "ollama run <model_name>"
 	ollama run "$model_name"
-}
-
-fastfetch() {
-	#give a bit more weight to arch and the cool wolf from darkos
-	logos=("arch2" "arch2" "darkos" "darkos" "fastfetch" "linux" "sulin")
-	command fastfetch -l "${logos[$RANDOM % ${#logos[@]}]}"
 }
