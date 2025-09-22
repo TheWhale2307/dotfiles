@@ -191,9 +191,15 @@ os() {
 		fi
 	done
 
-	# etract the name of the selected model based on user choice
+	# extract the name of the selected model based on user choice
 	model_name=$(echo "$output" | awk -v line=$((choice + 1)) 'NR == line {print $1}')
 
 	# run the chosen model using "ollama run <model_name>"
 	ollama run "$model_name"
+}
+
+fastfetch() {
+	#give a bit more weight to arch and the cool wolf from darkos
+	logos=("arch2" "arch2" "darkos" "darkos" "fastfetch" "linux" "sulin")
+	command fastfetch -l "${logos[$RANDOM % ${#logos[@]}]}"
 }
