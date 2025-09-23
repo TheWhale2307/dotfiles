@@ -32,6 +32,7 @@ alias aafire='aafire -driver curses'
 alias rsync='rsync --info=progress2'
 # reverse the order of entries so the relevant ones are at the bottom
 alias paru="paru --bottomup"
+alias yt-dlp=''
 
 # open tldr page when argument is given, fuzzy seach when run without arguments
 # uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
@@ -40,6 +41,15 @@ tldr() {
 		command tldr --list | fzf --preview "command tldr {} --color always" | xargs -r tldr
 	else
 		command tldr $@
+	fi
+}
+
+yt-dlp() {
+	if [ "$#" -eq 1 ]; then
+		# if given exactly one argument, download that video in mp4 by default
+		command yt-dlp -t mp4 $@
+	else
+		command yt-dlp $@
 	fi
 }
 
@@ -66,7 +76,7 @@ fastfetch() {
 	fi
 }
 
-neofetch () {
+neofetch() {
 	fastfetch $@
 }
 
@@ -89,7 +99,8 @@ cdl() {
 # git add all files and commit with message following "gg". Example: "gg My commit message"
 # only adds modified and deleted files, not untracked ones
 gg() {
-	#git add . # this is obsolete, done with the -a below
+	# "git add" is obsolete, done with the -a below
+	#git add . 
 	git commit -am "$*"
 }
 
