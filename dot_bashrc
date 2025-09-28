@@ -1,6 +1,6 @@
-# +-----------------+
-# | Zsh Main Config |
-# +-----------------+
+# +------------------+
+# | Bash Main Config |
+# +------------------+
 # very basic config as I mainly use zsh, but for backup purposes
 # also this file can be located only at ~/.bashrc 😠
 
