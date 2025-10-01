@@ -4,6 +4,13 @@
 # very basic config as I mainly use zsh, but for backup purposes
 # also this file can be located only at ~/.bashrc 😠
 
+# +-------+
+# | Paths |
+# +-------+
+
+# add scripts to path
+export PATH="$HOME/Scripts:$PATH"
+
 # +-----------------+
 # | Initializations |
 # +-----------------+
@@ -13,7 +20,14 @@
 eval "$(zoxide init --cmd cd bash)"
 
 # init prompt
-eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/zen.toml)"
+# check if we're in a TTY (TERM=linux) or if DISPLAY is not set
+if [[ "$TERM" == "linux" ]] || [[ -z "$DISPLAY" ]]; then
+    # load minimal/TTY config for console/headless environments
+	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen_tty.toml)"
+else
+    # load full config for terminal emulators
+	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen.toml)"
+fi
 
 # init fzf (env is in ~/.zshenv)
 source <(fzf --bash --preview "bat --color=always {}")
