@@ -23,10 +23,10 @@ eval "$(zoxide init --cmd cd bash)"
 # check if we're in a TTY (TERM=linux) or if DISPLAY is not set
 if [[ "$TERM" == "linux" ]] || [[ -z "$DISPLAY" ]]; then
     # load minimal/TTY config for console/headless environments
-	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen_tty.toml)"
+	eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/zen_tty.toml)"
 else
     # load full config for terminal emulators
-	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen.toml)"
+	eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/zen.toml)"
 fi
 
 # init fzf (env is in ~/.zshenv)
