@@ -29,7 +29,7 @@ alias e='exit'
 alias path='echo -e ${PATH//:/\\n}'
 alias shell='exec $SHELL -l'
 alias aafire='aafire -driver curses'
-alias rsync='rsync --info=progress2'
+alias rsync='rsync -r --info=progress2'
 alias ip='ip -color=auto'
 alias ping='prettyping'
 
@@ -120,7 +120,7 @@ ensure_installed() {
 # update the entire system with paru (and flatpak)
 uu() {
 	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
-	paru -Syu --noconfirm --sudoloop --newsonupgrade --ignore openrgb
+	paru -Syu
 	if paru -Qi "flatpak" >/dev/null 2>&1; then
 		printf "\n\033[53;4m--- Flatpak ---\033[0m\n\n"
 		flatpak update -y
