@@ -30,7 +30,6 @@ alias path='echo -e ${PATH//:/\\n}'
 alias shell='exec $SHELL -l'
 alias aafire='aafire -driver curses'
 alias rsync='rsync --info=progress2'
-# reverse the order of entries so the relevant ones are at the bottom
 alias ip='ip -color=auto'
 alias ping='prettyping'
 
