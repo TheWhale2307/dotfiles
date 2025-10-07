@@ -32,6 +32,7 @@ alias aafire='aafire -driver curses'
 alias rsync='rsync -r --info=progress2'
 alias ip='ip -color=auto'
 alias ping='prettyping'
+alias reflector='sudo reflector --save /etc/pacman.d/mirrorlist --country Germany,France --protocol https --latest 20'
 
 # open tldr page when argument is given, fuzzy seach when run without arguments
 # uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
@@ -120,7 +121,7 @@ ensure_installed() {
 # update the entire system with paru (and flatpak)
 uu() {
 	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
-	paru -Syu
+	paru -Syu --ignore openrgb
 	if paru -Qi "flatpak" >/dev/null 2>&1; then
 		printf "\n\033[53;4m--- Flatpak ---\033[0m\n\n"
 		flatpak update -y
