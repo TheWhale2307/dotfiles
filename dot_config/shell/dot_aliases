@@ -33,6 +33,7 @@ alias rsync='rsync -r --info=progress2'
 alias ip='ip -color=auto'
 alias ping='prettyping'
 alias reflector='sudo reflector --save /etc/pacman.d/mirrorlist --country Germany,France --protocol https --latest 20'
+alias vencord='sudo /usr/local/bin/vencord.sh'
 
 # open tldr page when argument is given, fuzzy seach when run without arguments
 # uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
