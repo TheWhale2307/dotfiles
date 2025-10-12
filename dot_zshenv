@@ -1,14 +1,14 @@
 # +----------------------+
 # | Zsh Environment Vars |
 # +----------------------+
-# set environment variables on login, main zsh config in ~/config/zsh/.zshrc
-# read first but only once, before ~/.config/zsh/.zprofile and ~/.config/zsh/.zshrc
+# Set environment variables on login, main zsh config in ~/config/zsh/.zshrc
+# Read first but only once, before ~/.config/zsh/.zprofile and ~/.config/zsh/.zshrc
 
 # +-----+
 # | XDG |
 # +-----+
 
-# follow XDG base dir specification
+# Follow XDG base dir specification
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -17,7 +17,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # | History |
 # +---------+
 
-# history
+# History
 export HISTFILE="$XDG_CACHE_HOME/zsh_history"
 export HISTSIZE=1000000
 export SAVEHIST=1000000
@@ -26,7 +26,7 @@ export SAVEHIST=1000000
 # | Programs |
 # +----------+
 
-# editors
+# Editors
 export EDITOR="nano"
 export VISUAL="nano"
 #export TERM="xterm-kitty"
@@ -39,24 +39,24 @@ export BROWSER2="firefox"
 # | Dotdirs |
 # +---------+
 
-# bootstrap .zshrc to ~/.config/zsh/.zshrc, any other zsh config files can also reside there
+# Bootstrap .zshrc to ~/.config/zsh/.zshrc, any other zsh config files can also reside there
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 # +-------+
 # | Paths |
 # +-------+
 
-# add scripts to path
+# Add scripts to path
 export PATH="$HOME/Scripts:$PATH"
 
 # +------------+
 # | Fzf Config |
 # +------------+
 
-# options for running "fzf"
+# Options for running "fzf"
 export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore"
 export FZF_DEFAULT_OPTS="--height 30% --preview='fzf-preview.sh {}'"
-# separate opts for history widget
+# Separate opts for history widget
 export FZF_CTRL_R_OPTS="--info inline --no-sort --no-preview"
-# options for "**<TAB>"
+# Options for "**<TAB>"
 export FZF_COMPLETION_OPTS='--height 30% --info=inline'

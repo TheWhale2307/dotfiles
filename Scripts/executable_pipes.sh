@@ -83,14 +83,14 @@ case $arg in
     esac
 done
 
-# set default values if not by options
+# Set default values if not by options
 ((${#V[@]})) || V=(0)
 
 cleanup() {
-    # clear up standard input
+    # Clear up standard input
     read -t 0.001 && cat </dev/stdin>/dev/null
 
-    # terminal has no smcup and rmcup capabilities
+    # Terminal has no smcup and rmcup capabilities
     ((FORCE_RESET)) && reset && exit 0
 
     tput rmcup
@@ -113,7 +113,7 @@ stty -echo
 tput smcup || FORCE_RESET=1
 tput civis
 tput clear
-# any key press exits the loop and this script
+# Any key press exits the loop and this script
 while REPLY=; read -t 0.0$((1000/f)) -n 1; [[ -z $REPLY ]] ; do
     for (( i=1; i<=p; i++ )); do
         # New position:

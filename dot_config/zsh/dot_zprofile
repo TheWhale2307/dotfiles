@@ -1,8 +1,8 @@
 # +--------------------+
 # | Zsh Profile Config |
 # +--------------------+
-# commands to run once on login, zsh settings in ~/config/zsh/.zshrc
-# read second but only by login shells, after ~/.zshenv but before ~/.config/zsh/.zshrc
+# Commands to run once on login, zsh settings in ~/config/zsh/.zshrc
+# Read second but only by login shells, after ~/.zshenv but before ~/.config/zsh/.zshrc
 
 #ensure_installed() {
 #	for package in "$@"; do

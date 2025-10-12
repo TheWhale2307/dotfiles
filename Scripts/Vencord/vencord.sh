@@ -1,11 +1,12 @@
 #!/bin/bash
 
+INSTALLFILE="/usr/local/bin/Vencord/VencordInstallerCli-linux"
+RESTART_DISCORD=0
+
+# This ↓ is hardcoded to my user because it caused trouble ($HOME resolving to "/root" as the home of root for example)
 run_as_felix(){
   sudo -u felix "$@"
 }
-# this ↑ and that ↓ are hardcoded to my user because they caused trouble ($HOME resolving to "/root" as the home of root for example)
-INSTALLFILE="/home/felix/Scripts/Vencord/VencordInstallerCli-linux"
-RESTART_DISCORD=0
 
 # If Discord is running, kill it and wait 2 seconds for it to fully close
 if run_as_felix killall -s 9 Discord; then

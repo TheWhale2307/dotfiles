@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #
-# The purpose of this script is to demonstrate how to preview a file or an
-# image in the preview window of fzf.
-#
+# The purpose of this script is to demonstrate how to preview a file or an image in the preview window of fzf.
 # Stolen from https://github.com/junegunn/fzf/blob/master/bin/fzf-preview.sh
 
 if [[ $# -ne 1 ]]; then

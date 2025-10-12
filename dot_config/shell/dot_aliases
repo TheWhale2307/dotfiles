@@ -1,7 +1,7 @@
 # +--------------+
 # | Alias Config |
 # +--------------+
-# read by all interactive shells ideally, mainly zsh (and bash)
+# Read by all interactive shells ideally, mainly zsh (and bash)
 
 # +---------+
 # | Aliases |
@@ -9,19 +9,19 @@
 
 alias ..='cd ..'
 alias cd..='cd ..'
-# use eza for better colored output
-# the sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
-# l prints a long list, A is for all files except "." and "..", h stands for human readable sizes and F appends "/" to folders and "*" to executables
+# Use eza for better colored output
+# The sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
+# The option l prints a long list, A is for all files except "." and "..", h stands for human readable sizes and F appends "/" to folders and "*" to executables
 alias ls='eza -F'
 alias la='eza -AF'
 alias lah='eza -lAhF'
-# legacy ls aliases
+# Legacy ls aliases
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
 #alias lah='ls -lAhF --color=auto'
 alias cat='bat'
-# make ripgrep case insensitive by default, use -s to override this
-# also include hidden files by default
+# Make ripgrep case insensitive by default, use -s to override this
+# Also include hidden files by default
 alias grep='rg -.i'
 alias nana='nano'
 alias c='clear'
@@ -35,8 +35,8 @@ alias ping='prettyping'
 alias reflector='sudo reflector --save /etc/pacman.d/mirrorlist --country Germany,France --protocol https --latest 20'
 alias vencord='sudo /usr/local/bin/vencord.sh'
 
-# open tldr page when argument is given, fuzzy seach when run without arguments
-# uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
+# Open tldr page when argument is given, fuzzy seach when run without arguments
+# Uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
 tldr() {
 	if [ "$#" -eq 0 ]; then
 		command tldr --list | fzf --preview "command tldr {} --color always" | xargs -r tldr
@@ -47,7 +47,7 @@ tldr() {
 
 yt-dlp() {
 	if [ "$#" -eq 1 ]; then
-		# if given exactly one argument, download that video in mp4 by default
+		# If given exactly one argument, download that video in mp4 by default
 		command yt-dlp -t mp4 $@
 	else
 		command yt-dlp $@
@@ -66,10 +66,10 @@ cputest() {
 
 fastfetch() {
 	ensure_installed fastfetch
-	# give a bit more weight to arch and the cool wolf from darkos
+	# Give a bit more weight to arch and the cool wolf from darkos
 	logos=("arch2" "arch2" "darkos" "darkos" "fastfetch" "locos" "sulin")
 
-	# indexing works fine for most shells, including bash, zsh arrays start at 1 however
+	# Indexing works fine for most shells, including bash, zsh arrays start at 1 however
 	if [[ -n "$ZSH_VERSION" ]]; then
 		command fastfetch -l "${logos[$(($RANDOM % ${#logos[@]} + 1))]}" $@
 	else
@@ -81,13 +81,13 @@ neofetch() {
 	fastfetch $@
 }
 
-# create a directory and cd into it directly
+# Create a directory and cd into it directly
 mkcd() {
 	mkdir "$*"
 	cd "$*"
 }
 
-# cd into directory and list its contents
+# Cd into directory and list its contents
 cdl() {
 	cd "$*"
 	ls
@@ -97,8 +97,8 @@ cdl() {
 # | Git Aliases |
 # +-------------+
 
-# git add all files and commit with message following "gg". Example: "gg My commit message"
-# only adds modified and deleted files, not untracked ones
+# Git add all files and commit with message following "gg". Example: "gg My commit message"
+# Only adds modified and deleted files, not untracked ones
 gg() {
 	# "git add" is obsolete, done with the -a below
 	#git add . 
@@ -109,7 +109,7 @@ gg() {
 # | Helper Functions |
 # +------------------+
 
-# install a package if it is not yet installed
+# Install a package if it is not yet installed
 ensure_installed() {
 	for package in "$@"; do
 		if ! paru -Qi "$package" >/dev/null 2>&1; then
@@ -119,7 +119,7 @@ ensure_installed() {
 	done
 }
 
-# update the entire system with paru (and flatpak)
+# Update the entire system with paru (and flatpak)
 uu() {
 	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
 	paru -Syu --ignore openrgb
@@ -138,20 +138,20 @@ figlet() {
 	command figlet -t -f doh $@ | lolcat
 }
 
-# dotfiles ohne HGich.T-Referenz sind keine richtigen dotfiles!
+# Dotfiles ohne HGich.T-Referenz sind keine richtigen dotfiles!
 hackertools(){
 	ensure_installed figlet
-	# pipe into filget to be able to use \n
+	# Pipe into filget to be able to use \n
 	echo -e "Hacker haben Hackertools! Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | command figlet -c -t
 }
 
-# just be a bit more polite to the shell
-# stolen from someone on reddit
+# Just be a bit more polite to the shell
+# Stolen from someone on reddit
 function pls(){
-	if [ "$#" -eq 0 ]; then # check if no arguments are given
-		sudo $(fc -ln -1) # execute previous command with sudo
+	if [ "$#" -eq 0 ]; then # Check if no arguments are given
+		sudo $(fc -ln -1) # Execute previous command with sudo
 	else
-		sudo $@ # alias 'please' -> 'sudo' if arguments are given
+		sudo $@ # Alias 'please' -> 'sudo' if arguments are given
 	fi
 }
 
@@ -159,62 +159,62 @@ function pls(){
 # | Scripting |
 # +-----------+
 
-# queue up commands inside of a text file from multiple sessions and execute them one by one in the first session
-# usage: q name <command> <arguments>
-# code is AI generated
+# Queue up commands inside of a text file from multiple sessions and execute them one by one in the first session
+# Usage: q name <command> <arguments>
+# Code is AI generated
 q() {
-# check for missing arguments
+# Check for missing arguments
 	if [[ $# -le 1 ]]; then
 		echo "Usage: q <file_name> <command> [args...]"
 		return 1
 	fi
 
-	# check if $1 is a command but not equal to $2 (probably wrong usage)
+	# Check if $1 is a command but not equal to $2 (probably wrong usage)
 	if command -v "$1" >/dev/null 2>&1 && [[ "$1" != "$2" ]]; then
 		echo "Usage: q <file_name> <command> [args...]"
 		echo "Did you mean: q <file_name> $* ?"
 		return 1
 	fi
 
-	# all validation passed - proceed with actual functionality
+	# All validation passed - proceed with actual functionality
 	local file="$HOME/$1.q.up"
-	shift # remove the first parameter (the file name)
+	shift # Remove the first parameter (the file name)
 	local cmd="$*"
 
 	if [[ ! -f "$file" ]]; then
-		# file doesn't exist, create it and execute the command
+		# File doesn't exist, create it and execute the command
 		touch "$file"
 		eval "$cmd"
-		# continuously process the file until it's empty
+		# Continuously process the file until it's empty
 		while [[ -s $file ]]; do
-			# read and execute the first line
+			# Read and execute the first line
 			local line=$(head -n 1 "$file")
-			# remove the executed line from the file
+			# Remove the executed line from the file
 			sed -i '1d' "$file"
 			eval "$line"
 		done
-		# remove the file if it's empty
+		# Remove the file if it's empty
 		rm "$file"
 	else
-		# file exists, append the command to the file
+		# File exists, append the command to the file
 		echo "$cmd" >> "$file"
 	fi
 }
 
-# list downloaded LLMs on ollama and easily run one by prompting
-# code is AI generated
+# List downloaded LLMs on ollama and easily run one by prompting
+# Code is AI generated
 os() {
-	# retrieve and save the output of "ollama list" in a variable
+	# Retrieve and save the output of "ollama list" in a variable
 	output=$(ollama list)
 
-	# print the output with line numbers for each line except the header
+	# Print the output with line numbers for each line except the header
 	echo "$output" | awk 'NR==1 {print; next} {print NR-1, $0}'
 
-	# get the number of models (subtracting header line)
+	# Get the number of models (subtracting header line)
 	num_models=$(echo "$output" | wc -l)
 	num_models=$((num_models - 1))
 
-	# prompt user for input and validate choice
+	# Prompt user for input and validate choice
 	while true; do
 		echo -n "\nEnter the number of the model you want to run (1-$num_models): "
 		read choice
@@ -225,9 +225,9 @@ os() {
 		fi
 	done
 
-	# extract the name of the selected model based on user choice
+	# Extract the name of the selected model based on user choice
 	model_name=$(echo "$output" | awk -v line=$((choice + 1)) 'NR == line {print $1}')
 
-	# run the chosen model using "ollama run <model_name>"
+	# Run the chosen model using "ollama run <model_name>"
 	ollama run "$model_name"
 }

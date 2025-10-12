@@ -42,8 +42,7 @@ set tabsize 4
 # Let an unmodified Backspace or Delete erase the marked region (instead of a single character, and without affecting the cutbuffer).
 set zap
 
-## Paint the interface elements of nano.  These are examples; there are
-## no colors by default, except for errorcolor and spotlightcolor.
+## Paint the interface elements of nano.  These are examples; there are no colors by default, except for errorcolor and spotlightcolor.
 # set titlecolor bold,white,blue
 # set promptcolor lightwhite,grey
 # set statuscolor bold,white,green
@@ -73,7 +72,7 @@ set zap
 # | Syntax Highlighting |
 # +---------------------+
 
-# add syntax highlighting to nano
+# Add syntax highlighting to nano
 include "/usr/share/nano/*.nanorc"
 include "/usr/share/nano/extra/*.nanorc"
 include "/usr/share/nano-syntax-highlighting/*.nanorc"
@@ -82,7 +81,7 @@ include "/usr/share/nano-syntax-highlighting/*.nanorc"
 # | Key bindings |
 # +--------------+
 
-# bind Ctrl Shift 7 to comment
+# Bind Ctrl+Shift+7 to comment
 bind ^/ comment main
 
 # For quickly uppercasing or lowercasing the word that the cursor is on. (These effectively select a word and pipe it through a sed command.)

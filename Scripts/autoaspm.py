@@ -3,7 +3,6 @@
 # Original bash script by Luis R. Rodriguez
 # Re-written in Python by z8
 # Re-re-written to patch supported devices automatically by notthebee
-#
 # Stolen from https://github.com/notthebee/AutoASPM/blob/main/autoaspm.py
 
 import re

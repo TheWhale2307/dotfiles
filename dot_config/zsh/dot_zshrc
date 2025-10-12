@@ -1,45 +1,45 @@
 # +-----------------+
 # | Zsh Main Config |
 # +-----------------+
-# read third but only by interactive shells, after ~/.zshenv (and ~/.config/zsh/.zprofile)
+# Read third but only by interactive shells, after ~/.zshenv (and ~/.config/zsh/.zprofile)
 
 # +-----------------+
 # | Initializations |
 # +-----------------+
 
-# load more (custom) completions
+# Load more (custom) completions
 fpath=($XDG_CONFIG_HOME/zsh/completions $fpath)
-# init completions
+# Init completions
 autoload -Uz compinit && compinit
-# enable easy access to colors
+# Enable easy access to colors
 # Usage: $fg[red] $bg[yellow] $reset_color
 autoload colors && colors
 
-# init zoxide
-# uses "cd" for regular usage and "cdi" for interactive mode with fzf
+# Init zoxide
+# Uses "cd" for regular usage and "cdi" for interactive mode with fzf
 eval "$(zoxide init --cmd cd zsh)"
 
-# init prompt
-# check if we're in a TTY (TERM=linux) or if DISPLAY is not set
+# Init prompt
+# Check if we're in a TTY (TERM=linux) or if DISPLAY is not set
 if [[ "$TERM" == "linux" ]] || [[ -z "$DISPLAY" ]]; then
-    # load minimal/TTY config for console/headless environments
+    # Load minimal/TTY config for console/headless environments
 	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen_tty.toml)"
 else
-    # load full config for terminal emulators
+    # Load full config for terminal emulators
 	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen.toml)"
 fi
 
-# init fzf (env is in ~/.zshenv)
+# Init fzf (env is in ~/.zshenv)
 source <(fzf --zsh --preview='fzf-preview.sh {}')
 
-# make path contain only unique entries
+# Make path contain only unique entries
 typeset -U PATH
 
 # +----------+
 # | Keybinds |
 # +----------+
 
-# keybinds (list all with "zle -al")
+# Keybinds (list all with "zle -al")
 bindkey '^[[1;5C' forward-word	# Ctrl+Right
 bindkey '^[[1;5D' backward-word # Ctrl+Left
 bindkey '^H' backward-kill-word # Crtl+Backspace
@@ -47,51 +47,51 @@ bindkey '^[[3;5~' kill-word		# Crtl+Del
 bindkey '^[[3~' delete-char		# Del
 
 # Custom widget to cycle through capitalize/uppercase/lowercase
-# code is AI generated, then modified to get the desired behavior
+# Code is AI generated, then modified to get the desired behavior
 toggle-case-word() {
-	# save cursor position
+	# Save cursor position
 	local pos=$CURSOR
 
-	# if cursor is between two spaces, do nothing
+	# If cursor is between two spaces, do nothing
 	if [[ ${BUFFER[pos]} == " " && ${BUFFER[pos+1]} == " " ]]; then
 		return
 	fi
 
-	# move to end of current word
+	# Move to end of current word
 	zle forward-word
 	local word_end=$CURSOR
 
-	# move to beginning of current word
+	# Move to beginning of current word
 	zle backward-word
 	local word_start=$CURSOR
 
-	# extract the word
+	# Extract the word
 	local word=${BUFFER[word_start+1,word_end]}
 
-	# determine new case based on current state
+	# Determine new case based on current state
 	local new_word
 	if [[ $word == ${(L)word} ]]; then
-		# if word is all lowercase, capitalize first letter
+		# If word is all lowercase, capitalize first letter
 		new_word=${(U)${word:0:1}}${(L)${word:1}}
 	elif [[ $word == ${(U)word} ]]; then
-		# if word is all uppercase, make lowercase
+		# If word is all uppercase, make lowercase
 		new_word=${(L)word}
 	else
-		# if word is mixed/capitalized, make uppercase
+		# If word is mixed/capitalized, make uppercase
 		new_word=${(U)word}
 	fi
 
-	# replace the word in buffer
+	# Replace the word in buffer
 	BUFFER[word_start+1,word_end]=$new_word
 
-	# restore cursor position
+	# Restore cursor position
 	CURSOR=$pos
 }
 zle -N toggle-case-word
 bindkey '^[c' toggle-case-word
 
 # Alt+Up to go to parent directory
-# source: https://wiki.archlinux.org/title/Zsh#File_manager_key_binds
+# Source: https://wiki.archlinux.org/title/Zsh#File_manager_key_binds
 cdParentKey() {
 	cd ..
 	zle reset-prompt
@@ -102,8 +102,8 @@ cdParentKey() {
 zle -N cdParentKey
 bindkey '^[[1;3A' cdParentKey
 
-# exit when Crtl+D is pressed, even when line is filled
-# source: https://wiki.archlinux.org/title/Zsh#Shortcut_to_exit_shell_on_partial_command_line
+# Exit when Crtl+D is pressed, even when line is filled
+# Source: https://wiki.archlinux.org/title/Zsh#Shortcut_to_exit_shell_on_partial_command_line
 exit_zsh() { exit }
 zle -N exit_zsh
 bindkey '^D' exit_zsh
@@ -113,42 +113,42 @@ bindkey '^D' exit_zsh
 # +---------+
 # (list all with "set -o")
 
-# set (better) history options
+# Set (better) history options
 setopt hist_ignore_space hist_ignore_dups inc_append_history share_history
 #setopt auto_menu menu_complete
-# type directory name to cd into it, additionally to zoxide
+# Type directory name to cd into it, additionally to zoxide
 setopt autocd
-# when a directory is autocompleted, append a slash instead of a space
+# When a directory is autocompleted, append a slash instead of a space
 setopt auto_param_slash
-# make globbing and completions case insensitive
+# Make globbing and completions case insensitive
 setopt no_case_glob no_case_match
-# include hidden files in globbing
+# Include hidden files in globbing
 setopt globdots
-# allow comments in shell
+# Allow comments in shell
 setopt interactive_comments
-# complete on the first tab
+# Complete on the first tab
 setopt menu_complete
 
-# options for completions
-# tab opens completions menu
+# Options for completions
+# Tab opens completions menu
 zstyle ":completion:*" menu select
-# include . and .. in completions menu
+# Include . and .. in completions menu
 zstyle ":completion:*" special-dirs true
-# colorize completions menu
+# Colorize completions menu
 zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS} ma=0\;33
 
 # +---------+
 # | Aliases |
 # +---------+
 
-# source aliases and aliases local to this machine if they exist
+# Source aliases and aliases local to this machine if they exist
 [ -f "$XDG_CONFIG_HOME/shell/.aliases" ] && source "$XDG_CONFIG_HOME/shell/.aliases"
 [ -f "$XDG_CONFIG_HOME/shell/.aliases_local" ] && source "$XDG_CONFIG_HOME/shell/.aliases_local"
 
-# bash has "help" to print documentation for builtins
-# zsh has no "help" by default and aliases "run-help" -> "man"
-# this makes zsh behave like bash in this regard
-# source: https://wiki.archlinux.org/title/Zsh#Help_command
+# Bash has "help" to print documentation for builtins
+# Zsh has no "help" by default and aliases "run-help" -> "man"
+# This makes zsh behave like bash in this regard
+# Source: https://wiki.archlinux.org/title/Zsh#Help_command
 autoload -Uz run-help
 (( ${+aliases[run-help]} )) && unalias run-help
 alias help=run-help
@@ -157,17 +157,17 @@ alias help=run-help
 # | Fun Stuff |
 # +-----------+
 
-# fancy tetris :)
+# Fancy tetris :)
 autoload -Uz tetriscurses
-# less fancy tetris :(
+# Less fancy tetris :(
 #autoload -Uz tetris
 
 # +---------+
 # | Plugins |
 # +---------+
-# these should be at the end in the config
+# These should be at the end in the config
 
-# source: https://github.com/zsh-users/zsh-syntax-highlighting
+# Source: https://github.com/zsh-users/zsh-syntax-highlighting
 source $XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh
-# source: https://github.com/zsh-users/zsh-autosuggestions
+# Source: https://github.com/zsh-users/zsh-autosuggestions
 source $XDG_CONFIG_HOME/zsh/suggestions/zsh-autosuggestions.zsh
