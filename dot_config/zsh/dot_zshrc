@@ -20,8 +20,8 @@ autoload colors && colors
 eval "$(zoxide init --cmd cd zsh)"
 
 # Init prompt
-# Check if we're in a TTY (TERM=linux) or if DISPLAY is not set
-if [[ "$TERM" == "linux" ]] || [[ -z "$DISPLAY" ]]; then
+# Check if we're in a TTY (TERM=linux)
+if [[ "$TERM" == "linux" ]]; then
     # Load minimal/TTY config for console/headless environments
 	eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen_tty.toml)"
 else
