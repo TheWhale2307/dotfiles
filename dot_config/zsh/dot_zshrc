@@ -35,6 +35,12 @@ source <(fzf --zsh --preview='fzf-preview.sh {}')
 # Make path contain only unique entries
 typeset -U PATH
 
+# Catch the USR1 signal and issue a rehash for completions
+# Stolen from https://wiki.archlinux.org/title/Zsh#Alternative_on-demand_rehash_using_SIGUSR1
+TRAPUSR1() {
+	rehash
+}
+
 # +----------+
 # | Keybinds |
 # +----------+
@@ -92,11 +98,24 @@ bindkey '^[c' toggle-case-word
 
 # Alt+Up to go to parent directory
 # Source: https://wiki.archlinux.org/title/Zsh#File_manager_key_binds
+# Source: https://stackoverflow.com/questions/61075356/zle-reset-prompt-not-cleaning-the-prompt
 cdParentKey() {
 	cd ..
+	# Reset oh-my-posh's promt
+	local precmd
+    for precmd in $precmd_functions; do
+        $precmd
+    done
 	zle reset-prompt
 	print
 	ls -AF --color=auto
+	print
+	print # Prints are necessary to push the next prompt down, otherwise it cuts off the bottom of ls
+	print
+	local precmd
+    for precmd in $precmd_functions; do
+        $precmd
+    done
 	zle reset-prompt
 }
 zle -N cdParentKey
@@ -104,7 +123,9 @@ bindkey '^[[1;3A' cdParentKey
 
 # Exit when Crtl+D is pressed, even when line is filled
 # Source: https://wiki.archlinux.org/title/Zsh#Shortcut_to_exit_shell_on_partial_command_line
-exit_zsh() { exit }
+exit_zsh() {
+	exit
+}
 zle -N exit_zsh
 bindkey '^D' exit_zsh
 
