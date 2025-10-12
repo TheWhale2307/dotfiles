@@ -108,7 +108,7 @@ cdParentKey() {
     done
 	zle reset-prompt
 	print
-	ls -AF --color=auto
+	ls -AF --color=auto # Aliases are not loaded yet, also "${aliases[la]}" does not work for some reason
 	print
 	print # Prints are necessary to push the next prompt down, otherwise it cuts off the bottom of ls
 	print
