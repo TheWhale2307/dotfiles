@@ -141,8 +141,9 @@ figlet() {
 # Dotfiles ohne HGich.T-Referenz sind keine richtigen dotfiles!
 hackertools(){
 	ensure_installed figlet
+
 	# Pipe into filget to be able to use \n
-	echo -e "Hacker haben Hackertools! Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | command figlet -c -t
+	echo -e "Hacker haben Hackertools!\n Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | command figlet -c -t | nms -a -f white
 }
 
 # Just be a bit more polite to the shell
