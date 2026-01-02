@@ -219,7 +219,7 @@ layout {
     center-focused-column "never"
     always-center-single-column
     empty-workspace-above-first
-    
+
     // Widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
         proportion 0.33333
@@ -240,7 +240,7 @@ layout {
     // default-column-width {}
 
     background-color "#3B4252" // Nord1
-        
+
     focus-ring {
         off
         width 4
@@ -288,7 +288,24 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
 
 environment{
-    //TODO
+    // Prefer Wayland for toolkit-based applications ...
+    QT_QPA_PLATFORM "wayland;xcb"
+    GDK_BACKEND "wayland,x11"
+    CLUTTER_BACKEND "wayland"
+    // ... for SDL ...
+    SDL_VIDEODRIVER "wayland,x11"
+    // ... and for Electron apps
+    ELECTRON_OZONE_PLATFORM_HINT "wayland"
+    // Mozilla applications (Firefox, Thunderbird) use wayland by default by now but this can't hurt
+    MOZ_ENABLE_WAYLAND "1"
+
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+    XDG_SESSION_DESKTOP "niri"
+
+    QT_AUTO_SCREEN_SCALE_FACTOR "1"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    QT_QPA_PLATFORMTHEME "qt6ct"
 }
 
 cursor{
