@@ -122,7 +122,7 @@ ensure_installed() {
 # Update the entire system with paru (and flatpak)
 uu() {
 	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
-	paru -Syu --ignore openrgb
+	paru -Syu
 	if paru -Qi "flatpak" >/dev/null 2>&1; then
 		printf "\n\033[53;4m--- Flatpak ---\033[0m\n\n"
 		flatpak update -y
@@ -140,7 +140,7 @@ figlet() {
 
 # Dotfiles ohne HGich.T-Referenz sind keine richtigen dotfiles!
 hackertools(){
-	ensure_installed figlet
+	ensure_installed figlet no-more-secrets
 
 	# Pipe into filget to be able to use \n
 	echo -e "Hacker haben Hackertools!\n Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | command figlet -c -t | nms -a -f white
