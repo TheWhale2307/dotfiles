@@ -67,7 +67,7 @@ cputest() {
 fastfetch() {
 	ensure_installed fastfetch
 	# Give a bit more weight to arch and the cool wolf from darkos
-	logos=("arch2" "arch2" "darkos" "darkos" "fastfetch" "locos" "sulin")
+	logos=("arch2" "arch2" "arch2" "darkos" "darkos" "darkos" "locos" "locos" "sulin" "sulin")
 
 	# Indexing works fine for most shells, including bash, zsh arrays start at 1 however
 	if [[ -n "$ZSH_VERSION" ]]; then
