@@ -161,7 +161,7 @@ function pls(){
 # +-----------+
 
 # Queue up commands inside of a text file from multiple sessions and execute them one by one in the first session
-# Usage: q name <command> <arguments>
+# Usage: q <name> <command> [<arguments>]
 # Code is AI generated
 q() {
 # Check for missing arguments
