@@ -18,10 +18,10 @@ fi
 if [ ! -x "$INSTALLFILE" ]; then
     echo "Downloading Installer..."
     run_as_felix mkdir -p "$(dirname "$INSTALLFILE")"
-    run_as_felix curl -sS https://github.com/Vendicated/VencordInstaller/releases/latest/download/VencordInstallerCli-Linux \
+    curl -sS https://github.com/Vendicated/VencordInstaller/releases/latest/download/VencordInstallerCli-Linux \
         --output "$INSTALLFILE" \
         --location
-    run_as_felix chmod +x "$INSTALLFILE"
+    chmod +x "$INSTALLFILE"
 fi
 
 # Execute the installer
