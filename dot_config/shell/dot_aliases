@@ -11,10 +11,10 @@ alias ..='cd ..'
 alias cd..='cd ..'
 # Use eza for better colored output
 # The sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
-# The option l prints a long list, A is for all files except "." and "..", h stands for human readable sizes and F appends "/" to folders and "*" to executables
+# The option l prints a long list, A is for all files except "." and "..", h stands for human readable sizes, F appends "/" to folders and "*" to executables, and g also prints group info
 alias ls='eza -F'
 alias la='eza -AF'
-alias lah='eza -lAhF'
+alias lah='eza -lAhFg'
 # Legacy ls aliases
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
