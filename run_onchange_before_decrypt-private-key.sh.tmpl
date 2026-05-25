@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ ! -f "/home/felix/.ssh/chezmoi-key.txt" ]; then
+    mkdir -p "/home/felix/.ssh"
+    chezmoi age decrypt --output "/home/felix/.ssh/chezmoi-key.txt" --passphrase "{{ .chezmoi.sourceDir }}/dot_ssh/chezmoi-key.txt.age"
+    chmod 600 "/home/felix/.ssh/chezmoi-key.txt"
+fi
