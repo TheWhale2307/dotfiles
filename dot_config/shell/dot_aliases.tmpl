@@ -19,7 +19,7 @@ alias lah='eza -lAhgF'
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
 #alias lah='ls -lAhF --color=auto'
-{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch")) -}}
+{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 alias cat='bat'
 {{ else if eq .chezmoi.osRelease.id "debian" -}}
 alias cat='batcat'
@@ -38,7 +38,7 @@ alias shell='exec $SHELL -l'
 alias rsync='rsync -r --info=progress2'
 alias ip='ip -color=auto'
 alias ping='prettyping'
-{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch")) -}}
+{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 alias aafire='aafire -driver curses'
 alias reflector='sudo reflector --save /etc/pacman.d/mirrorlist --country Germany,France --protocol https --latest 20'
 alias vencord='sudo /usr/local/bin/Vencord/vencord.sh'
@@ -69,7 +69,7 @@ cputest() {
 
 fastfetch() {
 
-	{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch")) -}}
+	{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 	# Give a bit more weight to arch and the cool wolf from darkos
 	logos=("arch2" "arch2" "arch2" "darkos" "darkos" "darkos" "locos" "locos" "sulin" "sulin")
 	{{ else if eq .chezmoi.osRelease.id "debian" -}}
@@ -118,7 +118,7 @@ gg() {
 
 # Update the entire system with the main package manager (and flatpak)
 uu() {
-	{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch")) -}}
+	{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
 	paru -Syu
 	if command -v "flatpak" >/dev/null 2>&1; then
@@ -136,7 +136,7 @@ uu() {
 # | Fun Stuff |
 # +-----------+
 
-{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch")) -}}
+{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 figlet() {
 	command figlet -t -f doh $@ | lolcat
 }
