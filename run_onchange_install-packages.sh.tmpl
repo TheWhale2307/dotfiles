@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
+{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch")) -}}
 echo "Installing required packages on Arch..."
 paru --needed --noconfirm -S {{ .packages.arch | join " " }}
 
