@@ -19,21 +19,30 @@ alias lah='eza -lAhgF'
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
 #alias lah='ls -lAhF --color=auto'
+{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
 alias cat='bat'
+{{ else if eq .chezmoi.osRelease.id "debian" -}}
+alias cat='batcat'
+alias bat='batcat'
+{{ end -}}
 # Make ripgrep case insensitive by default, use -s to override this
 # Also include hidden files by default
 alias grep='rg -.i'
 alias nana='nano'
 alias c='clear'
 alias e='exit'
+# Print the value of $PATH, separated by new lines 
 alias path='echo -e ${PATH//:/\\n}'
+# Relaunch the shell, reloads the config
 alias shell='exec $SHELL -l'
-alias aafire='aafire -driver curses'
 alias rsync='rsync -r --info=progress2'
 alias ip='ip -color=auto'
 alias ping='prettyping'
+{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
+alias aafire='aafire -driver curses'
 alias reflector='sudo reflector --save /etc/pacman.d/mirrorlist --country Germany,France --protocol https --latest 20'
 alias vencord='sudo /usr/local/bin/Vencord/vencord.sh'
+{{ end -}}
 
 # Open tldr page when argument is given, fuzzy seach when run without arguments
 # Uses "command" to prevent recursive alias expansion and actually call /usr/bin/tldr
@@ -54,20 +63,18 @@ yt-dlp() {
 	fi
 }
 
-gputest() {
-	ensure_installed furmark
-	furmark --demo furmark-knot-vk --fullscreen --p1080
-}
-
 cputest() {
-	ensure_installed stress
 	stress --cpu $(nproc)
 }
 
 fastfetch() {
-	ensure_installed fastfetch
+
+	{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
 	# Give a bit more weight to arch and the cool wolf from darkos
 	logos=("arch2" "arch2" "arch2" "darkos" "darkos" "darkos" "locos" "locos" "sulin" "sulin")
+	{{ else if eq .chezmoi.osRelease.id "debian" -}}
+	logos=("debian")
+	{{ end -}}
 
 	# Indexing works fine for most shells, including bash, zsh arrays start at 1 however
 	if [[ -n "$ZSH_VERSION" ]]; then
@@ -109,32 +116,28 @@ gg() {
 # | Helper Functions |
 # +------------------+
 
-# Install a package if it is not yet installed
-ensure_installed() {
-	for package in "$@"; do
-		if ! paru -Qi "$package" >/dev/null 2>&1; then
-			echo "WARNING: $package is missing! Trying to install..."
-			paru -S --noconfirm "$package"
-		fi
-	done
-}
-
-# Update the entire system with paru (and flatpak)
+# Update the entire system with the main package manager (and flatpak)
 uu() {
+	{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
 	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
 	paru -Syu
-	if paru -Qi "flatpak" >/dev/null 2>&1; then
+	if command -v "flatpak" >/dev/null 2>&1; then
 		printf "\n\033[53;4m--- Flatpak ---\033[0m\n\n"
 		flatpak update -y
 	fi
+	{{ else if eq .chezmoi.osRelease.id "debian" -}}
+	printf "\n\033[53;4m--- APT ---\033[0m\n\n"
+	sudo apt update
+	sudo apt upgrade -y
+	{{- end }}
 }
 
 # +-----------+
 # | Fun Stuff |
 # +-----------+
 
+{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
 figlet() {
-	ensure_installed figlet figlet-fonts lolcat
 	command figlet -t -f doh $@ | lolcat
 }
 
@@ -145,6 +148,7 @@ hackertools(){
 	# Pipe into filget to be able to use \n
 	echo -e "Hacker haben Hackertools!\n Schwarze Hackertools!\n Wir fahren die Brennstaebe hoch!" | command figlet -c -t | nms -a -f white
 }
+{{- end }}
 
 # Just be a bit more polite to the shell
 # Stolen from someone on reddit

@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+
+{{ if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) -}}
+echo "Installing required packages on Arch..."
+paru --needed --noconfirm -S {{ .packages.arch | join " " }}
+
+if ! command -v nms &> /dev/null; then
+	echo "Installing No More Secrets..."
+	git clone https://github.com/bartobri/no-more-secrets.git /tmp/nms
+	cd /tmp/nms
+	make nms
+	sudo make install
+	rm -rf /tmp/nms
+fi
+{{ else if eq .chezmoi.osRelease.id "debian" -}}
+echo "Installing required packages on Debian..."
+sudo apt install -y {{ .packages.debian | join " " }}
+
+if ! command -v oh-my-posh &> /dev/null; then
+	echo "Installing Oh My Posh..."
+	curl -s https://ohmyposh.dev/install.sh | sudo bash -s -- -d /bin
+fi
+
+if [ ! -d "/usr/share/nano-syntax-highlighting" ]; then
+	echo "Installing nano syntax highlighting"
+	git clone --depth=1 "https://github.com/galenguyer/nano-syntax-highlighting" /tmp/nano-syntax-highlighting
+	sudo mkdir -p "/usr/share/nano-syntax-highlighting"
+	sudo find /tmp/nano-syntax-highlighting -name '*.nanorc' | xargs sudo install -D -m644 -t "/usr/share/nano-syntax-highlighting"
+	rm -rf /tmp/nano-syntax-highlighting
+fi
+{{ else -}}
+echo "Could not identify distribution to install required packages. (install-packages.sh.toml)"
+{{ end -}}

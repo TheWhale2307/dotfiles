@@ -1,1 +1,4 @@
 .ssh/chezmoi-key.txt.age
+{{ if eq .chezmoi.osRelease.id "debian" -}}
+Scripts/Vencord
+{{ end -}}
