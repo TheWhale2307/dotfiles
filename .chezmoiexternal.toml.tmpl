@@ -1,4 +1,4 @@
-[{{ (joinPath (trimPrefix .chezmoi.destDir (env "XDG_CONFIG_HOME") | trimPrefix "/") "zsh" "autosuggestions") | quote }}]
+[{{ (joinPath (trimPrefix (toString .chezmoi.destDir) (env "XDG_CONFIG_HOME") | trimPrefix "/") "zsh" "autosuggestions") | quote }}]
 type = "archive"
 url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
 exact = true
@@ -6,7 +6,7 @@ stripComponents = 1
 refreshPeriod = "168h"
 include = ["*/*.zsh", "*/.version", "*/.revision-hash", "*/src/**"]
 
-[{{ (joinPath (trimPrefix .chezmoi.destDir (env "XDG_CONFIG_HOME") | trimPrefix "/") "zsh" "completions") | quote }}]
+[{{ (joinPath (trimPrefix (toString .chezmoi.destDir) (env "XDG_CONFIG_HOME") | trimPrefix "/") "zsh" "completions") | quote }}]
 type = "archive"
 url = "https://github.com/zsh-users/zsh-completions/archive/master.tar.gz"
 exact = true
@@ -14,7 +14,7 @@ stripComponents = 1
 refreshPeriod = "168h"
 include = ["*/src/**"]
 
-[{{ (joinPath (trimPrefix .chezmoi.destDir (env "XDG_CONFIG_HOME") | trimPrefix "/") "zsh" "syntax-highlighting") | quote }}]
+[{{ (joinPath (trimPrefix (toString .chezmoi.destDir) (env "XDG_CONFIG_HOME") | trimPrefix "/") "zsh" "syntax-highlighting") | quote }}]
 type = "archive"
 url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
 exact = true
