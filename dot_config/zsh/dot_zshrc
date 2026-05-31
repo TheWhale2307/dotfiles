@@ -8,7 +8,7 @@
 # +-----------------+
 
 # Load more (custom) completions
-fpath=($XDG_CONFIG_HOME/zsh/completions $fpath)
+fpath=($XDG_CONFIG_HOME/zsh/completions/src $fpath)
 # Init completions
 autoload -Uz compinit && compinit
 # Enable easy access to colors
@@ -189,6 +189,6 @@ autoload -Uz tetriscurses
 # These should be at the end in the config
 
 # Source: https://github.com/zsh-users/zsh-syntax-highlighting
-source $XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh
+source $XDG_CONFIG_HOME/zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
 # Source: https://github.com/zsh-users/zsh-autosuggestions
-source $XDG_CONFIG_HOME/zsh/suggestions/zsh-autosuggestions.zsh
+source $XDG_CONFIG_HOME/zsh/autosuggestions/zsh-autosuggestions.zsh
