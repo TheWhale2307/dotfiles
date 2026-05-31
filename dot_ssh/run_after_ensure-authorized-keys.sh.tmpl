@@ -2,7 +2,7 @@
 set -euo pipefail
 
 TARGET="{{ .chezmoi.destDir }}/.ssh/authorized_keys"
-SOURCE="{{ .chezmoi.sourceDir }}/dot_ssh/authorized_keys_content.age"
+SOURCE="{{ .chezmoi.sourceDir }}/dot_ssh/authorized-keys-content.age"
 
 # Decrypt to a temp file
 TMPFILE=$(mktemp)
