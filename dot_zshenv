@@ -35,12 +35,14 @@ export TERMINAL="kitty"
 export BROWSER="librewolf"
 export BROWSER2="firefox"
 
-# +---------+
-# | Dotdirs |
-# +---------+
+# +------------+
+# | Zsh config |
+# +------------+
 
 # Bootstrap .zshrc to ~/.config/zsh/.zshrc, any other zsh config files can also reside there
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+# Prioritise suggestions from the history and use completions after that
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # +-------+
 # | Paths |
