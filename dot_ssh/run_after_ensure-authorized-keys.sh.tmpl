@@ -1,12 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-TARGET="{{ .chezmoi.homeDir }}/.ssh/authorized_keys"
-SOURCE="{{ .chezmoi.sourceDir }}/dot_ssh/authorized_keys.age"
+TARGET="{{ .chezmoi.destDir }}/.ssh/authorized_keys"
+SOURCE="{{ .chezmoi.sourceDir }}/dot_ssh/authorized_keys_content.age"
 
 # Decrypt to a temp file
 TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE"' EXIT
+
+touch $TARGET
+chmod 600 $TARGET
 
 chezmoi decrypt --output "$TMPFILE" "$SOURCE"
 
