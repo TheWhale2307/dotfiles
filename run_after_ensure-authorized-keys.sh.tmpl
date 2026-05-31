@@ -8,7 +8,7 @@ SOURCE="{{ .chezmoi.sourceDir }}/dot_ssh/authorized_keys.age"
 TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE"' EXIT
 
-chezmoi age decrypt --output "$TMPFILE" "$SOURCE"
+chezmoi decrypt --output "$TMPFILE" "$SOURCE"
 
 # For each line in the decrypted file, append if not already present
 while IFS= read -r line; do
