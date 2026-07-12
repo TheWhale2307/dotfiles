@@ -3,7 +3,7 @@ set -e
 
 {{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 echo "Installing required packages on Arch..."
-paru --needed --noconfirm -S {{ .packages.arch | join " " }}
+paru --needed --noconfirm -Sy {{ .packages.arch | join " " }}
 
 if ! command -v nms &> /dev/null; then
 	echo "Installing No More Secrets..."
@@ -12,6 +12,14 @@ if ! command -v nms &> /dev/null; then
 	make nms
 	sudo make install
 	rm -rf /tmp/nms
+fi
+
+if ! command -v terminal-parrot &> /dev/null; then
+	echo "Installing terminal-parrot..."
+	curl -L -o /tmp/terminal-parrot.tar.gz https://github.com/jmhobbs/terminal-parrot/releases/latest/download/terminal-parrot_Linux_x86_64.tar.gz
+	tar -xzf /tmp/terminal-parrot.tar.gz -C /tmp
+	sudo cp /tmp/terminal-parrot /bin/terminal-parrot
+	rm -rf /tmp/terminal-parrot.tar.gz /tmp/terminal-parrot
 fi
 {{ else if eq .chezmoi.osRelease.id "debian" -}}
 echo "Installing required packages on Debian..."
