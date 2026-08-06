@@ -3,7 +3,7 @@ set -e
 
 {{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 echo "Installing required packages on Arch..."
-paru --needed --noconfirm -Sy {{ .packages.arch | join " " }}
+yay --needed --noconfirm -Sy {{ .packages.arch | join " " }}
 
 if ! command -v nms &> /dev/null; then
 	echo "Installing No More Secrets..."

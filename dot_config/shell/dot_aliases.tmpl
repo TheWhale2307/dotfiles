@@ -118,8 +118,18 @@ gg() {
 # Update the entire system with the main package manager (and flatpak)
 uu() {
 	{{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
-	printf "\n\033[53;4m--- Paru ---\033[0m\n\n"
-	paru -Syu
+	printf "\n\033[53;4m--- Yay ---\033[0m\n\n"
+
+	# See if there are any news since the last system update
+	news=$(yay -Pw)
+	# If there are (non whitespace characters present), print them and wait with the upgrade
+	if [[ -z "${news//[[:space:]]/}" ]]; then
+		echo "news"
+		printf >&2 '%s ' 'Press Enter to continue...'
+		read -r
+	fi
+
+	yay -Syu
 	if command -v "flatpak" >/dev/null 2>&1; then
 		printf "\n\033[53;4m--- Flatpak ---\033[0m\n\n"
 		flatpak update -y
