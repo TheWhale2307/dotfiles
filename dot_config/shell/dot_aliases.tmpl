@@ -12,9 +12,9 @@ alias cd..='cd ..'
 # Use eza for better colored output
 # The sorting is not eaxctly to my liking but trying to fix it with 'eza -F --color=always | sort -k7,7' produces weird results
 # The option l prints a long list, A is for all files except "." and "..", h stands for human readable sizes, F appends "/" to folders and "*" to executables, and g also prints group info
-alias ls='eza -F'
-alias la='eza -AF'
-alias lah='eza -lAhgF'
+alias ls='eza -F auto'
+alias la='eza -AF auto'
+alias lah='eza -lAhgF auto'
 # Legacy ls aliases
 #alias ls='ls -F --color=auto'
 #alias la='ls -AF --color=auto'
@@ -37,7 +37,7 @@ alias path='echo -e ${PATH//:/\\n}'
 alias shell='exec $SHELL -l'
 alias rsync='rsync -r --info=progress2'
 alias ip='ip -color=auto'
-alias ping='prettyping'
+alias ping='gping'
 {{ if (or (eq .chezmoi.osRelease.id "arch") (and (hasKey .chezmoi.osRelease "idLike") (eq .chezmoi.osRelease.idLike "arch"))) -}}
 alias aafire='aafire -driver curses'
 alias vencord='sudo /usr/local/bin/Vencord/vencord.sh'
