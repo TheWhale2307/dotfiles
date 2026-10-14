@@ -4,6 +4,7 @@ packages:
     - 'asciiquarium'
     - 'bat'
     - 'btop'
+    - 'cbonsai'
     - 'cmatrix'
     - 'downgrade'
     - 'dysk'
@@ -33,6 +34,7 @@ packages:
   debian:
     - 'bat'
     - 'btop'
+    - 'cbonsai'
     - 'dysk'
     - 'eza'
     - 'fastfetch'
