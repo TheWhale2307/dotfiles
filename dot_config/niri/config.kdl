@@ -1,3 +1,7 @@
+// +--------------------+
+// | Niri Version 25.11 |
+// +--------------------+
+
 // +-------+
 // | Input |
 // +-------+
@@ -21,6 +25,8 @@ input {
         drag true
         natural-scroll
         accel-speed 0.7
+        // not so fast, young man!
+        scroll-factor 0.25
         // Disable pointer acceleration
         accel-profile "flat"
         scroll-method "two-finger"
@@ -91,7 +97,7 @@ binds {
     Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
     Mod+E hotkey-overlay-title="Open File Manager: dolphin" { spawn "dolphin"; }
     Mod+Space hotkey-overlay-title="Run an Application: wofi" { spawn "wofi" "--show" "drun"; }
-    Mod+B { spawn "librewolf"; }
+    Mod+B { spawn "firefox"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also do a four-finger swipe up on a touchpad.
@@ -217,7 +223,7 @@ switch-events {
 layout {
     gaps 4
     center-focused-column "never"
-    always-center-single-column
+    //always-center-single-column
     empty-workspace-above-first
 
     // Widths that "switch-preset-column-width" (Mod+R) toggles between.
@@ -281,6 +287,8 @@ layout {
 // +---------------+
 // | Miscellaneous |
 // +---------------+
+
+spawn-at-startup "noctalia"
 
 prefer-no-csd
 
